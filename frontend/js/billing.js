@@ -1,3 +1,11 @@
+/* ==========================================================================
+   FABRICBILL UNIFIED BILLING STYLESHEET - AUTOMATIC CUSTOMER SYNC
+   ========================================================================== */
+
+const API = "http://127.0.0.1:5000";
+let currentBillingItems = [];
+let finalizedGrandTotal = 0;
+
 document.addEventListener('DOMContentLoaded', () => {
     const navItems = document.querySelectorAll('.nav-links a');
     const currentPage = window.location.pathname.split("/").pop();
@@ -14,25 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
     loadBillingProducts();
 });
 
-// हा ग्लोबल ॲरे आता रिकामा आहे, यामध्ये फक्त API द्वारे आलेला डेटा बसेल
-let currentBillingItems = [];
-
 function loadBillingProducts() {
-    // ==========================================================================
-    // 🔴 FUTURE BACKEND INTEGRATION POINT (FETCH DATA FROM DATABASE)
-    // ==========================================================================
-    // जेव्हा बॅकएंड पार्टनर (Member 6) तुम्हाला API देईल, तेव्हा खालील ओळी कमेंट करा 
-    // आणि त्याचा जागी Fetch API चा कोड लिहा.
-    //
-    // उदा.
-    // fetch('YOUR_API_URL', { headers: { 'Authorization': 'Bearer YOUR_KEY' } })
-    //   .then(res => res.json())
-    //   .then(data => { currentBillingItems = data; processCalculations(); });
-    // ==========================================================================
-
-    // सध्या स्टॅटिक डेटा काढून टाकल्यामुळे ॲरे रिकामा राहील
-    currentBillingItems = []; 
-    processCalculations();
+    fetch(`${API}/api/bills`)
+        .then(res => res.json())
+        .then(bills => {
+            console.log("Database entries synchronized:", bills);
+            currentBillingItems = bills; 
+            processCalculations();
+        })
+        .catch(err => {
+            console.error("Critical: Could not connect to API server:", err);
+            currentBillingItems = [];
+            processCalculations();
+        });
 }
 
 function processCalculations() {
@@ -42,56 +44,76 @@ function processCalculations() {
     tbody.innerHTML = '';
     let subtotalValue = 0;
 
-    // जर डेटा नसेल तर टेबलमध्ये 'No items' असा मेसेज दिसेल
-    if (currentBillingItems.length === 0) {
+    if (!currentBillingItems || currentBillingItems.length === 0) {
         tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#777; padding:24px;">No items currently staged in active cart.</td></tr>`;
-        if(document.getElementById("subtotalDisplay")) document.getElementById("subtotalDisplay").innerText = "₹0";
-        if(document.getElementById("gstDisplay")) document.getElementById("gstDisplay").innerText = "₹0";
-        if(document.getElementById("grandTotalDisplay")) document.getElementById("grandTotalDisplay").innerText = "₹0";
+        document.getElementById("subtotalDisplay").innerText = "₹0";
+        document.getElementById("gstDisplay").innerText = "₹0";
+        document.getElementById("grandTotalDisplay").innerText = "₹0";
         return;
     }
 
-    // जेव्हा API मधून डेटा येईल, तेव्हा हे लूप आपोआप चालू होईल आणि टेबल भरेल
-    currentBillingItems.forEach(item => {
-        let total = item.price * item.qty;
-        subtotalValue += total;
+    currentBillingItems.forEach(bill => {
+        let amount = parseFloat(bill.total_amount) || 0;
+        subtotalValue += amount;
 
         tbody.innerHTML += `
             <tr>
-              <td>${item.product}</td>
-              <td class="align-right">₹${item.price}</td>
-              <td class="align-center">${item.qty}</td>
-              <td class="align-right">₹${total}</td>
+              <td>Bill Reference: ${bill.customer_name || 'Walk-in Customer'}</td>
+              <td class="align-right">₹${amount.toFixed(2)}</td>
+              <td class="align-center">1</td>
+              <td class="align-right">₹${amount.toFixed(2)}</td>
             </tr>
         `;
     });
 
     let gstValue = subtotalValue * 0.05;
-    let grandTotalValue = subtotalValue + gstValue;
+    finalizedGrandTotal = subtotalValue + gstValue;
 
-    if(document.getElementById("subtotalDisplay")) document.getElementById("subtotalDisplay").innerText = "₹" + subtotalValue;
+    if(document.getElementById("subtotalDisplay")) document.getElementById("subtotalDisplay").innerText = "₹" + subtotalValue.toFixed(2);
     if(document.getElementById("gstDisplay")) document.getElementById("gstDisplay").innerText = "₹" + gstValue.toFixed(2);
-    if(document.getElementById("grandTotalDisplay")) document.getElementById("grandTotalDisplay").innerText = "₹" + grandTotalValue.toFixed(2);
+    if(document.getElementById("grandTotalDisplay")) document.getElementById("grandTotalDisplay").innerText = "₹" + finalizedGrandTotal.toFixed(2);
 }
 
+// 🟢 FIX: No prompts, no alerts. Automatically uses pre-filled customer data.
 document.getElementById('generateInvoiceBtn').addEventListener('click', () => {
+    const tbody = document.getElementById("billingItemsBody");
+
     if (!currentBillingItems || currentBillingItems.length === 0) {
-        alert("Cannot generate transaction data packets for blank cart fields.");
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#dc2626; font-weight:bold; padding:24px;">❌ Error: Cannot check out an empty cart!</td></tr>`;
         return;
     }
 
-    // ==========================================================================
-    // 🔴 FUTURE BACKEND INTEGRATION POINT (POST INVOICE TO SERVER)
-    // ==========================================================================
-    // डेटाबेसमध्ये बिल सुरक्षित करण्यासाठी बॅकएंड डेव्हलपर इथे त्याचा कोड जोडेल.
-    // ==========================================================================
+    /* 👉 AUTOMATIC PICKUP: 
+       If your 'customer.html' page saves the selected customer name to localStorage 
+       when you click on them, this line grabs it instantly without asking the user.
+       If nothing is found, it defaults to 'Walk-in Customer'.
+    */
+    const activeCustomer = localStorage.getItem("selectedCustomerName") || "Walk-in Customer";
 
-    const dataString = encodeURIComponent(JSON.stringify(currentBillingItems));
-    window.location.href = `invoice.html?items=${dataString}`;
+    fetch(`${API}/api/bills`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            customer_name: activeCustomer, // Automatic entry
+            total_amount: finalizedGrandTotal.toFixed(2)
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Server confirmation:", data.message);
+        const dataString = encodeURIComponent(JSON.stringify(currentBillingItems));
+        window.location.href = `invoice.html?items=${dataString}`;
+    })
+    .catch(err => {
+        console.error("Database sync failure:", err);
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#dc2626; font-weight:bold; padding:24px;">❌ Network Error: Could not save to server.</td></tr>`;
+    });
 });
 
 document.getElementById('clearBillBtn').addEventListener('click', () => {
-    if(confirm("Are you sure you want to completely flush current cart rows?")) {
+    if(confirm("Are you sure you want to clear the display screen?")) {
         currentBillingItems = [];
         processCalculations();
     }
