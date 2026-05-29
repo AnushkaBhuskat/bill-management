@@ -1,41 +1,67 @@
 from flask import Blueprint, request, jsonify
-from database import get_connection
+from database.db import get_db_connection
 
 customer_bp = Blueprint('customer', __name__)
 
 
+# GET ALL CUSTOMERS
 @customer_bp.route('/api/customer', methods=['GET'])
 def get_customers():
-    conn = get_connection()
+
+    conn = get_db_connection()
+
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM customers")
+
     customers = cursor.fetchall()
 
-    cursor.close()
     conn.close()
 
-    return jsonify([dict(row) for row in customers])
+    customer_list = []
+
+    for customer in customers:
+
+        customer_data = {
+            "id": customer[0],
+            "customer_name": customer[1],
+            "mobile": customer[2],
+            "address": customer[3]
+        }
+
+        customer_list.append(customer_data)
+
+    return jsonify(customer_list)
 
 
+# ADD CUSTOMER
 @customer_bp.route('/api/customer', methods=['POST'])
 def add_customer():
+
     data = request.json
 
-    conn = get_connection()
+    conn = get_db_connection()
+
     cursor = conn.cursor()
 
-    query = "INSERT INTO customers(name, phone, address) VALUES(%s,%s,%s)"
+    query = """
+    INSERT INTO customers
+    (customer_name, mobile, address)
+    VALUES (?, ?, ?)
+    """
+
     values = (
-        data['name'],
-        data['phone'],
+        data['customer_name'],
+        data['mobile'],
         data['address']
     )
 
     cursor.execute(query, values)
+
     conn.commit()
 
-    cursor.close()
     conn.close()
 
-    return jsonify({"message": "Customer Added"})
+    return jsonify({
+        "message": "Customer Added Successfully"
+    })
