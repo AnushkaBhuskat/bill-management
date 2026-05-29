@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FabricBill - Billing Dashboard</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="../css/billing.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="logo">
+      <div class="logo-box">
+        <i class="fa-solid fa-scissors"></i>
+      </div>
+      <div>
+        <h2>FabricBill</h2>
+        <p>Cloth Billing System</p>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html" class="nav-item">
+        <i class="fa-solid fa-house"></i> Home
+      </a>
+      <a href="products.html" class="nav-item">
+        <i class="fa-solid fa-shirt"></i> Products
+      </a>
+      <a href="customers.html" class="nav-item">
+        <i class="fa-solid fa-user"></i> Customer
+      </a>
+      <a href="billing.html" class="nav-item active">
+        <i class="fa-solid fa-calculator"></i> Billing
+      </a>
+      <a href="invoice.html" class="nav-item">
+        <i class="fa-solid fa-file-invoice"></i> Invoice
+      </a>
+    </div>
+  </nav>
+
+  <div class="dashboard-split-container">
+    
+    <div class="panel-card items-panel">
+      <div class="panel-title">
+        <i class="fa-solid fa-list-check" style="color: #4f46e5; margin-right: 8px;"></i>
+        <h2>Items</h2>
+      </div>
+
+      <div class="table-scroll-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="align-right">Price</th>
+              <th class="align-center">Qty</th>
+              <th class="align-right">Total</th>
+            </tr>
+          </thead>
+          <tbody id="billingItemsBody">
+            </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel-card summary-panel">
+      <div class="panel-title">
+        <h2>Bill Summary</h2>
+      </div>
+
+      <div class="summary-details">
+        <div class="calc-row">
+          <span>Subtotal</span>
+          <span id="subtotalDisplay">₹0</span>
+        </div>
+        
+        <div class="calc-row">
+          <span>GST <mark class="gst-pill">5%</mark></span>
+          <span id="gstDisplay">₹0</span>
+        </div>
+
+        <div class="grand-total">
+          <span>Grand Total</span>
+          <span id="grandTotalDisplay">₹0</span>
+        </div>
+
+        <div class="action-block">
+          <button id="generateInvoiceBtn" class="action-btn invoice-trigger">
+            <i class="fa-solid fa-file-invoice"></i> Generate Invoice
+          </button>
+          
+          <button id="clearBillBtn" class="action-btn clear-trigger">Clear Bill</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../js/billing.js"></script>
+</body>
+</html>
