@@ -1,7 +1,12 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
   // =========================
-  // DATE (ALWAYS WORKS)
+  // API BASE
+  // =========================
+  const API = "http://127.0.0.1:5000";
+
+  // =========================
+  // DATE (FRONTEND ONLY)
   // =========================
   document.getElementById("invoiceDate").textContent =
     new Date().toLocaleDateString("en-IN", {
@@ -13,16 +18,20 @@ document.addEventListener("DOMContentLoaded", async function () {
   try {
 
     // =========================
-    // BACKEND DATA
+    // FETCH CUSTOMER + BILL
     // =========================
-    const customerRes = await fetch("/api/customer/latest");
-    const billingRes = await fetch("/api/billing/latest");
+    const customerRes = await fetch(`${API}/api/customer/latest`);
+    const billingRes = await fetch(`${API}/api/billing/latest`);
+
+    if (!customerRes.ok || !billingRes.ok) {
+      throw new Error("Customer or Billing API failed");
+    }
 
     const customer = await customerRes.json();
     const billingItems = await billingRes.json();
 
     // =========================
-    // CUSTOMER
+    // CUSTOMER UI
     // =========================
     document.getElementById("customerName").textContent = customer.name;
     document.getElementById("customerMobile").textContent = customer.mobile;
@@ -35,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       "INV-" + Date.now();
 
     // =========================
-    // ITEMS
+    // TABLE ITEMS
     // =========================
     const tbody = document.getElementById("invoiceItems");
     tbody.innerHTML = "";
@@ -43,14 +52,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     let subtotal = 0;
 
     billingItems.forEach(item => {
-      const total = item.price * item.qty;
+
+      const price = Number(item.price);
+      const qty = Number(item.qty);
+      const total = price * qty;
+
       subtotal += total;
 
       tbody.innerHTML += `
         <tr>
           <td>${item.product}</td>
-          <td>₹${item.price}</td>
-          <td>${item.qty}</td>
+          <td>₹${price}</td>
+          <td>${qty}</td>
           <td>₹${total}</td>
         </tr>
       `;
@@ -66,10 +79,28 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("gst").textContent = `₹${gst.toFixed(2)}`;
     document.getElementById("grandTotal").textContent = `₹${grandTotal.toFixed(2)}`;
 
+    // =========================
+    // FETCH ALL INVOICES LIST (NEW INTEGRATION)
+    // =========================
+    const invoicesRes = await fetch(`${API}/api/invoices`);
+
+    if (invoicesRes.ok) {
+      const invoices = await invoicesRes.json();
+
+      console.log("All invoices:", invoices);
+
+      invoices.forEach(inv => {
+        console.log("Invoice ID:", inv.id);
+      });
+
+    } else {
+      console.warn("Invoices API not working");
+    }
+
   }
 
   catch (err) {
-    console.error(err);
+    console.error("Invoice Error:", err);
     alert("Failed to load invoice data");
   }
 
