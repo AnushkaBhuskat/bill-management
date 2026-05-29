@@ -36,8 +36,39 @@ CREATE TABLE IF NOT EXISTS bills (
 )
 """)
 
+# Products Table
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS products (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    product_name TEXT NOT NULL,
+
+    product_price REAL,
+
+    stock INTEGER
+)
+""")
+
+# Invoice Table
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS invoices (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    customer_id INTEGER,
+
+    bill_id INTEGER,
+
+    total_amount REAL,
+
+    invoice_date TEXT
+)
+""")
+
 conn.commit()
 
 conn.close()
+
 
 print("Tables Created Successfully")
