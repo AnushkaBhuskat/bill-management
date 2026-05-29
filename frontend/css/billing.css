@@ -78,8 +78,6 @@ body {
   color: white;
 }
 
-
-
 /* =========================================
    SPLIT PANEL STRUCTURE
    ========================================= */
@@ -89,6 +87,8 @@ body {
   display: grid;
   grid-template-columns: 1.6fr 1.1fr;
   gap: 24px;
+  /* ⚡ बदल: यामुळे डावा आणि उजवा बॉक्स स्वतःच्या गरजेनुसार स्वतंत्र उंची घेतील, रुंदी तीच राहील */
+  align-items: flex-start; 
 }
 
 .panel-card {
@@ -96,6 +96,11 @@ body {
   padding: 30px;
   border-radius: 12px;
   border: 1px solid #ddd;
+}
+
+/* ⚡ बदल: Items पॅनेलची उंची फिक्स न ठेवता ऑटोमॅटिक केली */
+.items-panel {
+  height: auto;
 }
 
 .panel-title {
@@ -245,6 +250,5 @@ table tbody tr:last-child td {
 }
 
 @media(max-width: 600px) {
-  /* Simple mobile table adjustments to prevent layout overflow tracking */
   table th:nth-child(2), table td:nth-child(2) { display: none; } 
 }
