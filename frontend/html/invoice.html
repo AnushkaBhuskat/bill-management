@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice - FabricBill</title>
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <link rel="stylesheet" href="../css/invoice.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+  <div class="logo">
+    <div class="logo-box">
+      <i class="fa-solid fa-scissors"></i>
+    </div>
+    <div>
+      <h2>FabricBill</h2>
+      <p>Cloth Billing System</p>
+    </div>
+  </div>
+
+  <div class="nav-links">
+    <a href="index.html"><i class="fa-solid fa-house"></i>Home</a>
+    <a href="products.html"><i class="fa-solid fa-shirt"></i>Products</a>
+    <a href="customer.html"><i class="fa-solid fa-user"></i>Customer</a>
+    <a href="billing.html"><i class="fa-solid fa-calculator"></i>Billing</a>
+    <a class="active" href="invoice.html"><i class="fa-solid fa-file-invoice"></i>Invoice</a>
+  </div>
+
+</nav>
+
+<!-- INVOICE -->
+<div class="invoice-container">
+
+  <!-- HEADER -->
+  <div class="top">
+
+    <div class="store">
+      <h1>FabricBill Store</h1>
+      <p>Cloth & Textile Retail</p>
+      <p>Nagpur, Maharashtra • GSTIN: 27ABCDE1234F1Z5</p>
+    </div>
+
+    <div class="invoice-info">
+      <h2 id="invoiceNumber"></h2>
+      <p id="invoiceDate"></p>
+      <span class="paid">Paid</span>
+    </div>
+
+  </div>
+
+  <!-- CUSTOMER -->
+<div class="invoice-body">
+
+  <div class="customer">
+    <h3>BILLED TO</h3>
+    <p><strong id="customerName"></strong></p>
+    <p id="customerMobile"></p>
+    <p id="customerAddress"></p>
+  </div>
+
+  <table>
+    ...
+  </table>
+
+</div>
+  <!-- TABLE -->
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Total</th>
+      </tr>
+      
+    </thead>
+    <tbody id="invoiceItems"></tbody>
+  </table>
+
+  <!-- SUMMARY -->
+  <!-- INVOICE FOOTER -->
+<div class="invoice-footer">
+
+  <div class="summary-box">
+
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <span id="subtotal"></span>
+    </div>
+
+    <div class="summary-row">
+      <span>GST (5%)</span>
+      <span id="gst"></span>
+    </div>
+
+    <div class="summary-row grand">
+      <span>Grand Total</span>
+      <span id="grandTotal"></span>
+    </div>
+
+  </div>
+
+</div>
+
+  <button class="print-btn" onclick="window.print()">
+    <i class="fa-solid fa-print"></i> Print Invoice
+  </button>
+
+</div>
+
+<script src="../js/invoice.js"></script>
+</body>
+</html>

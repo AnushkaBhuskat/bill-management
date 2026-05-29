@@ -1,0 +1,254 @@
+/* ==========================================================================
+   FABRICBILL UNIFIED BILLING STYLESHEET
+   ========================================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+/* =========================================
+   NAVBAR COMPONENT
+   ========================================= */
+.navbar {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-box {
+  width: 45px;
+  height: 45px;
+  background: #4f46e5;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 20px;
+}
+
+.logo h2 {
+  font-size: 22px;
+}
+
+.logo p {
+  color: #666;
+  font-size: 14px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #222;
+  border: 1px solid #ddd;
+  padding: 10px 18px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.3s;
+}
+
+/* Base style for hovering other buttons */
+.nav-links a:hover {
+  background: #4f46e5;
+  color: white;
+}
+
+/* =========================================
+   SPLIT PANEL STRUCTURE
+   ========================================= */
+.dashboard-split-container {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1.6fr 1.1fr;
+  gap: 24px;
+  /* ⚡ बदल: यामुळे डावा आणि उजवा बॉक्स स्वतःच्या गरजेनुसार स्वतंत्र उंची घेतील, रुंदी तीच राहील */
+  align-items: flex-start; 
+}
+
+.panel-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+/* ⚡ बदल: Items पॅनेलची उंची फिक्स न ठेवता ऑटोमॅटिक केली */
+.items-panel {
+  height: auto;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.panel-title h2 {
+  font-size: 20px;
+}
+
+/* =========================================
+   DATA TABLES 
+   ========================================= */
+.table-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th {
+  background: #f3f3f3;
+  text-align: left;
+  padding: 14px;
+  color: #555;
+  font-weight: bold;
+}
+
+table td {
+  padding: 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Utility alignments */
+.align-right { text-align: right; }
+.align-center { text-align: center; }
+
+/* =========================================
+   CHECKOUT CALC PANEL
+   ========================================= */
+.summary-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+.gst-pill {
+  background: #ede9fe;
+  color: #4f46e5;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.grand-total {
+  border-top: 2px solid #ddd;
+  padding-top: 16px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+/* =========================================
+   ACTION BUTTON PANELS
+   ========================================= */
+.action-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.action-btn {
+  width: 100%;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.invoice-trigger {
+  background: #4f46e5;
+  color: white;
+}
+
+.invoice-trigger:hover {
+  background: #4338ca;
+}
+
+.clear-trigger {
+  background: white;
+  color: #222;
+  border: 1px solid #ddd;
+}
+
+.clear-trigger:hover {
+  background: #f9f9f9;
+  border-color: #aaa;
+}
+
+/* =========================================
+   MEDIA RESPONSIVE MEDIA QUERIES
+   ========================================= */
+@media(max-width: 950px) {
+  .dashboard-split-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .navbar {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media(max-width: 600px) {
+  table th:nth-child(2), table td:nth-child(2) { display: none; } 
+}
