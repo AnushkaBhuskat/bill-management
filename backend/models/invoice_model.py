@@ -1,8 +1,17 @@
 from backend.database.db import get_db_connection
 
 
-# CREATE INVOICE
-def create_invoice(customer_id, bill_id, total_amount, invoice_date):
+def create_invoice(
+    invoice_no,
+    customer_name,
+    mobile,
+    address,
+    subtotal,
+    gst,
+    grand_total,
+    payment_status,
+    invoice_date
+):
 
     conn = get_db_connection()
 
@@ -10,45 +19,71 @@ def create_invoice(customer_id, bill_id, total_amount, invoice_date):
 
     cursor.execute("""
     INSERT INTO invoices
-    (customer_id, bill_id, total_amount, invoice_date)
-    VALUES (?, ?, ?, ?)
-    """, (customer_id, bill_id, total_amount, invoice_date))
+    (
+        invoice_no,
+        customer_name,
+        mobile,
+        address,
+        subtotal,
+        gst,
+        grand_total,
+        payment_status,
+        invoice_date
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        invoice_no,
+        customer_name,
+        mobile,
+        address,
+        subtotal,
+        gst,
+        grand_total,
+        payment_status,
+        invoice_date
+    ))
 
     conn.commit()
-    conn.close()
 
-    print("Invoice Created Successfully")
-
-
-# FETCH ALL INVOICES
-def get_all_invoices():
-
-    conn = get_db_connection()
-
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM invoices")
-
-    invoices = cursor.fetchall()
+    invoice_id = cursor.lastrowid
 
     conn.close()
 
-    return invoices
+    return invoice_id
 
 
-# DELETE INVOICE
-def delete_invoice(invoice_id):
+def add_invoice_item(
+    invoice_id,
+    product_name,
+    price,
+    quantity,
+    total
+):
 
     conn = get_db_connection()
 
     cursor = conn.cursor()
 
     cursor.execute("""
-    DELETE FROM invoices
-    WHERE id = ?
-    """, (invoice_id,))
+    INSERT INTO invoice_items
+    (
+        invoice_id,
+        product_name,
+        price,
+        quantity,
+        total
+    )
+    VALUES (?, ?, ?, ?, ?)
+    """, (
+        invoice_id,
+        product_name,
+        price,
+        quantity,
+        total
+    ))
 
     conn.commit()
+
     conn.close()
 
-    print("Invoice Deleted Successfully")
+    print("Invoice Item Added Successfully")

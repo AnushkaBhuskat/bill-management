@@ -56,13 +56,41 @@ CREATE TABLE IF NOT EXISTS invoices (
 
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    customer_id INTEGER,
+    invoice_no TEXT,
 
-    bill_id INTEGER,
+    customer_name TEXT,
 
-    total_amount REAL,
+    mobile TEXT,
+
+    address TEXT,
+
+    subtotal REAL,
+
+    gst REAL,
+
+    grand_total REAL,
+
+    payment_status TEXT,
 
     invoice_date TEXT
+)
+""")
+
+# Invoice Items Table
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS invoice_items (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    invoice_id INTEGER,
+
+    product_name TEXT,
+
+    price REAL,
+
+    quantity INTEGER,
+
+    total REAL
 )
 """)
 
