@@ -1,24 +1,41 @@
 from flask import Blueprint, request, jsonify
+from database import get_connection
 
-billing_bp = Blueprint('billing', __name__)
+bill_bp = Blueprint('bill', __name__)
 
-bills = []
 
-@billing_bp.route('/generate-bill', methods=['POST'])
-def generate_bill():
+@bill_bp.route('/api/bills', methods=['GET'])
+def get_bills():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM bills")
+    bills = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify([dict(row) for row in bills])
+
+
+@bill_bp.route('/api/bills', methods=['POST'])
+def create_bill():
     data = request.json
 
-    total = 0
+    conn = get_connection()
+    cursor = conn.cursor()
 
-    for item in data['items']:
-        total += item['price'] * item['quantity']
+    query = "INSERT INTO bills(customer_name, total_amount) VALUES(%s,%s)"
 
-    bill = {
-        'customer': data['customer'],
-        'items': data['items'],
-        'total': total
-    }
+    values = (
+        data['customer_name'],
+        data['total_amount']
+    )
 
-    bills.append(bill)
+    cursor.execute(query, values)
+    conn.commit()
 
-    return jsonify(bill)
+    cursor.close()
+    conn.close()
+
+    return jsonify({"message": "Bill Created"})
