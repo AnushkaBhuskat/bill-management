@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>FabricBill Dashboard</title>
+
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <link rel="stylesheet" href="home.css">
+</head>
+
+<body>
+
+  <!-- =========================
+       NAVBAR
+  ========================== -->
+
+  <nav class="navbar">
+
+    <div class="logo">
+
+      <div class="logo-box">
+        <i class="fa-solid fa-scissors"></i>
+      </div>
+
+      <div>
+        <h2>FabricBill</h2>
+        <p>Cloth Billing System</p>
+      </div>
+
+    </div>
+
+    <div class="nav-links">
+
+      <a href="home.html">
+        <i class="fa-solid fa-house"></i>
+        Home
+      </a>
+
+      <a href="products.html">
+        <i class="fa-solid fa-shirt"></i>
+        Products
+      </a>
+
+      <a href="customer.html">
+        <i class="fa-solid fa-user"></i>
+        Customer
+      </a>
+
+      <a href="billing.html">
+        <i class="fa-solid fa-calculator"></i>
+        Billing
+      </a>
+
+      <a href="invoice.html">
+        <i class="fa-solid fa-file-invoice"></i>
+        Invoice
+      </a>
+
+    </div>
+
+  </nav>
+
+
+  <!-- =========================
+       MAIN CONTAINER
+  ========================== -->
+
+  <div class="dashboard-container">
+
+    <!-- HERO SECTION -->
+    <div class="hero-section">
+
+      <div class="hero-content">
+
+        <h1>Welcome to FabricBill</h1>
+
+        <p>
+          Manage products, customers & invoices
+          for your cloth shop.
+        </p>
+
+        <div class="hero-buttons">
+
+          <button class="primary-btn">
+            <i class="fa-solid fa-calculator"></i>
+            Start Billing
+          </button>
+
+          <button class="secondary-btn">
+            <i class="fa-solid fa-shirt"></i>
+            View Products
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="hero-icon">
+        <i class="fa-solid fa-bag-shopping"></i>
+      </div>
+
+    </div>
+
+
+    <!-- STATS SECTION -->
+    <div class="stats-container">
+
+      <!-- CARD 1 -->
+      <div class="stat-card">
+
+        <div class="card-icon purple">
+          <i class="fa-solid fa-shirt"></i>
+        </div>
+
+        <div>
+          <h3>Total Products</h3>
+          <p id="totalProducts">0</p>
+        </div>
+
+      </div>
+
+
+      <!-- CARD 2 -->
+      <div class="stat-card">
+
+        <div class="card-icon blue">
+          <i class="fa-solid fa-users"></i>
+        </div>
+
+        <div>
+          <h3>Customers</h3>
+          <p id="totalCustomers">0</p>
+        </div>
+
+      </div>
+
+
+      <!-- CARD 3 -->
+      <div class="stat-card">
+
+        <div class="card-icon yellow">
+          <i class="fa-solid fa-receipt"></i>
+        </div>
+
+        <div>
+          <h3>Bills Today</h3>
+          <p id="totalBills">0</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="home.js"></script>
+
+</body>
+</html>
