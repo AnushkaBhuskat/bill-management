@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
@@ -10,7 +12,9 @@
   <link rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
+  <!-- CSS FILE -->
   <link rel="stylesheet" href="../css/home.css">
+
 </head>
 
 <body>
@@ -72,6 +76,7 @@
 
   <div class="dashboard-container">
 
+
     <!-- HERO SECTION -->
     <div class="hero-section">
 
@@ -107,10 +112,14 @@
     </div>
 
 
-    <!-- STATS SECTION -->
+    <!-- =========================
+         STATS SECTION
+    ========================== -->
+
     <div class="stats-container">
 
-      <!-- CARD 1 -->
+
+      <!-- TOTAL PRODUCTS -->
       <div class="stat-card">
 
         <div class="card-icon purple">
@@ -125,7 +134,7 @@
       </div>
 
 
-      <!-- CARD 2 -->
+      <!-- TOTAL CUSTOMERS -->
       <div class="stat-card">
 
         <div class="card-icon blue">
@@ -133,14 +142,14 @@
         </div>
 
         <div>
-          <h3>Customers</h3>
+          <h3>Total Customers</h3>
           <p id="totalCustomers">0</p>
         </div>
 
       </div>
 
 
-      <!-- CARD 3 -->
+      <!-- TOTAL BILLS -->
       <div class="stat-card">
 
         <div class="card-icon yellow">
@@ -148,8 +157,23 @@
         </div>
 
         <div>
-          <h3>Bills Today</h3>
+          <h3>Total Bills</h3>
           <p id="totalBills">0</p>
+        </div>
+
+      </div>
+
+
+      <!-- REVENUE -->
+      <div class="stat-card">
+
+        <div class="card-icon green">
+          <i class="fa-solid fa-indian-rupee-sign"></i>
+        </div>
+
+        <div>
+          <h3>Total Revenue</h3>
+          <p id="revenue">0</p>
         </div>
 
       </div>
@@ -158,7 +182,13 @@
 
   </div>
 
+
+  <!-- =========================
+       JS FILE
+  ========================== -->
+
   <script src="../js/home.js"></script>
 
 </body>
+
 </html>

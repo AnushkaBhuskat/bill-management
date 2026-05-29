@@ -1,105 +1,63 @@
 // ==========================
-// PRODUCTS DATA
+// DASHBOARD JS FILE
+// FRONTEND CONNECTED WITH
+// PYTHON FLASK BACKEND
 // ==========================
-
-let products = JSON.parse(
-  localStorage.getItem("products")
-);
 
 
 // ==========================
-// CUSTOMERS DATA
+// API URL
 // ==========================
 
-let customers = JSON.parse(
-  localStorage.getItem("customers")
-);
+const API = "http://127.0.0.1:5000";
 
 
 // ==========================
-// BILLS DATA
+// FETCH DASHBOARD DATA
 // ==========================
 
-let bills = JSON.parse(
-  localStorage.getItem("bills")
-);
+async function fetchDashboardData() {
+
+  try {
+
+    // API CALL TO FLASK BACKEND
+    const response = await fetch(`${API}/api/dashboard`);
+
+    // CONVERT RESPONSE TO JSON
+    const data = await response.json();
+
+    console.log("Dashboard Data:", data);
 
 
-// ==========================
-// DEMO DATA
-// ==========================
+    // ==========================
+    // UPDATE DASHBOARD VALUES
+    // ==========================
 
-if(!products){
+    document.getElementById("totalProducts").innerText =
+      data.total_products;
 
-  products = [
+    document.getElementById("totalCustomers").innerText =
+      data.total_customers;
 
-    {
-      name: "Cotton Saree",
-      price: 1200
-    },
+    document.getElementById("totalBills").innerText =
+      data.total_bills;
 
-    {
-      name: "Linen Shirt",
-      price: 850
-    },
+    document.getElementById("revenue").innerText =
+      data.revenue;
 
-    {
-      name: "Silk Kurti",
-      price: 1500
-    }
+  }
 
-  ];
+  catch (error) {
 
-  localStorage.setItem(
-    "products",
-    JSON.stringify(products)
-  );
-}
+    console.log("Error Fetching Dashboard Data:", error);
 
+  }
 
-if(!customers){
-
-  customers = [
-
-    {
-      name: "Priya Sharma"
-    }
-
-  ];
-
-  localStorage.setItem(
-    "customers",
-    JSON.stringify(customers)
-  );
-}
-
-
-if(!bills){
-
-  bills = [
-
-    {
-      billNo: 1
-    }
-
-  ];
-
-  localStorage.setItem(
-    "bills",
-    JSON.stringify(bills)
-  );
 }
 
 
 // ==========================
-// SHOW DASHBOARD DATA
+// CALL FUNCTION
 // ==========================
 
-document.getElementById("totalProducts").innerText =
-  products.length;
-
-document.getElementById("totalCustomers").innerText =
-  customers.length;
-
-document.getElementById("totalBills").innerText =
-  bills.length;
+fetchDashboardData();
