@@ -4,7 +4,7 @@ from database import get_connection
 customer_bp = Blueprint('customer', __name__)
 
 
-@customer_bp.route('/api/customers', methods=['GET'])
+@customer_bp.route('/api/customer', methods=['GET'])
 def get_customers():
     conn = get_connection()
     cursor = conn.cursor()
@@ -18,7 +18,7 @@ def get_customers():
     return jsonify([dict(row) for row in customers])
 
 
-@customer_bp.route('/api/customers', methods=['POST'])
+@customer_bp.route('/api/customer', methods=['POST'])
 def add_customer():
     data = request.json
 
