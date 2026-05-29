@@ -4,64 +4,108 @@ from database.db import get_db_connection
 customer_bp = Blueprint('customer', __name__)
 
 
+# ====================================
 # GET ALL CUSTOMERS
-@customer_bp.route('/api/customer', methods=['GET'])
+# ====================================
+
+@customer_bp.route('/api/customers', methods=['GET'])
 def get_customers():
 
-    conn = get_db_connection()
+    try:
 
-    cursor = conn.cursor()
+        conn = get_db_connection()
 
-    cursor.execute("SELECT * FROM customers")
+        cursor = conn.cursor()
 
-    customers = cursor.fetchall()
+        cursor.execute("SELECT * FROM customers")
 
-    conn.close()
+        customers = cursor.fetchall()
 
-    customer_list = []
+        conn.close()
 
-    for customer in customers:
+        customer_list = []
 
-        customer_data = {
-            "id": customer[0],
-            "customer_name": customer[1],
-            "mobile": customer[2],
-            "address": customer[3]
-        }
+        for customer in customers:
 
-        customer_list.append(customer_data)
+            customer_data = {
+                "id": customer[0],
+                "name": customer[1],
+                "phone": customer[2],
+                "address": customer[3]
+            }
 
-    return jsonify(customer_list)
+            customer_list.append(customer_data)
+
+        return jsonify(customer_list)
+
+    except Exception as e:
+
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
 
 
+
+# ====================================
 # ADD CUSTOMER
-@customer_bp.route('/api/customer', methods=['POST'])
+# ====================================
+
+@customer_bp.route('/api/customers', methods=['POST'])
 def add_customer():
 
-    data = request.json
+    try:
 
-    conn = get_db_connection()
+        data = request.json
 
-    cursor = conn.cursor()
+        # DATA FROM FRONTEND
+        name = data.get('name')
 
-    query = """
-    INSERT INTO customers
-    (customer_name, mobile, address)
-    VALUES (?, ?, ?)
-    """
+        phone = data.get('phone')
 
-    values = (
-        data['customer_name'],
-        data['mobile'],
-        data['address']
-    )
+        address = data.get('address')
 
-    cursor.execute(query, values)
 
-    conn.commit()
+        # VALIDATION
+        if not name or not phone or not address:
 
-    conn.close()
+            return jsonify({
+                "status": "error",
+                "message": "All fields are required"
+            }), 400
 
-    return jsonify({
-        "message": "Customer Added Successfully"
-    })
+
+        conn = get_db_connection()
+
+        cursor = conn.cursor()
+
+        # DATABASE COLUMN NAMES
+        query = """
+        INSERT INTO customers
+        (customer_name, mobile, address)
+        VALUES (?, ?, ?)
+        """
+
+        values = (
+            name,
+            phone,
+            address
+        )
+
+        cursor.execute(query, values)
+
+        conn.commit()
+
+        conn.close()
+
+        return jsonify({
+            "status": "success",
+            "message": "Customer Added Successfully"
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500

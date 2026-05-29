@@ -103,7 +103,7 @@ form.addEventListener("submit", function(e){
       body:JSON.stringify({
 
         name:name,
-        mobile:mobile,
+       phone:mobile,
         address:address
 
       })
